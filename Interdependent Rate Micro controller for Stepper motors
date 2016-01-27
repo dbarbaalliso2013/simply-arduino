@@ -1,0 +1,65 @@
+
+//Daniel Barba
+//dualstepper microcontroller V1.1 1/27/2016
+//This is a simple arduino microcontroller program
+//This runs two interdepndant stepper drivers/motors at different rates
+//Please read comments for details
+
+
+//DO NOT CHANGE THESE VALUES
+const int step1pin=8;//steper 1 pulse pin
+const int step2pin=7;//stepper 2 pulse pin
+double pi=3.14159265358979323846; //defintion of Pi
+double S1=(pi/2), S2=(pi/2); //Starting value for Sine loop 
+bool step1 =1, step2=1; //steppers on start up 
+
+
+//microseconds for each motor to complete one step 
+//dependant on resolution DEFAULT on A4988 is full step at 1.8 degrees of rotation on NEMA 17)
+double rateX1=100 , rateX2=500 ; //alter value for desired time of one step in microseconds ratex1=stepper motor 1 (pin8) || ratex2= stepper motor 2 (pin7)
+
+
+void setup() {
+  pinMode(step1pin, OUTPUT);//declaring pins for output
+  pinMode(step2pin, OUTPUT);
+}
+
+
+//each full loop approximiately 1 microsecond
+void loop() {
+  
+  delay(1);//delay for loop DO NOT CHANGE VALUE
+  
+  //sending pulse as high or low (o or 1)
+  digitalWrite(step1pin, step1);
+  digitalWrite(step2pin, step2);
+
+  //deciding if it is time to switch output to HIGH or LOW based of sine graph
+  if(0< sin(S1))
+  {
+    step1=1;
+  }
+  if(0< sin(S2))
+  {
+    step2=1;
+  }
+  if(0> sin(S1))
+  {
+    step1=0;
+  }
+  if(0> sin(S2))
+  {
+    step2=0; 
+  }
+  
+
+  //adding to individual variables based off rateXn
+  //creates different ratio of timed pulses and therefore stepper speed
+  S1+=(pi/rateX1);
+  S2+=(pi/rateX2);
+
+}
+
+
+
+
